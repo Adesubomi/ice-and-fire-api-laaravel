@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::prefix('v1')->name('v1')->group( function () {
+Route::prefix('v1')->name('v1.')->group( function () {
     Route::resource('books', BookController::class)
-        ->only(['index', 'show', 'store', 'update', 'delete']);
+        ->only(['index', 'show', 'store', 'update', 'destroy']);
 });

@@ -17,9 +17,13 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->success([
-            'books' => []
-        ], null, "List of books");
+        return response()->success(
+            data: [
+                'books' => Book::latest()->get(),
+            ],
+            statusCode: null,
+            message: "List of books"
+        );
     }
 
     /**

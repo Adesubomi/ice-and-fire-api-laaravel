@@ -39,7 +39,7 @@ class Book extends Model
     protected function releaseDate(): Attribute
     {
         return Attribute::make(
-            get: fn (Carbon $value) => $value->format('YYYY-MM-DD'),
+            get: fn (mixed $value) => Carbon::parse($value)->format('Y-m-d'),
             set: fn (string $value) => Carbon::parse($value),
         );
     }
