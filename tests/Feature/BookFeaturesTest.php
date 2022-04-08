@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Book;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class BookFeaturesTest extends TestCase
@@ -82,8 +83,38 @@ class BookFeaturesTest extends TestCase
                 "country" => $book_sample->country,
                 "number_of_pages" => $book_sample->number_of_pages,
                 "publisher" => $book_sample->publisher,
-//                "release_date" => $book_sample->release_date,
+                "release_date" => Carbon::parse($book_sample->release_date),
             ]
         );
+    }
+
+    /**
+     * @return void
+     * @test
+     */
+    public function can_view_the_details_of_a_book(): void
+    {
+        $book_sample = Book::factory()->create();
+        $endpoint = route('api.v1.books.show', [
+            'book' => $book_sample->id,
+        ]);
+
+        $response = $this->getJson($endpoint);
+
+        $response->assertSuccessful();
+        $response->assertJsonStructure([
+            'status', 'status_code', 'data' => [
+                'book' => [
+                    "name",
+                    "isbn",
+                    "author",
+                    "country",
+                    "number_of_pages",
+                    "publisher",
+                    "release_date",
+                ]
+            ]
+        ]);
+
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookStoreRequest;
-use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -39,36 +38,17 @@ class BookController extends Controller
         );
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Book $book
-     * @return Response
-     */
-    public function show(Book $book)
+    public function show(Book $book): JsonResponse
     {
-        //
+        return response()->success(
+            data: [
+                'book' => $book,
+            ],
+            statusCode: null,
+        );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Book $book
-     * @return Response
-     */
-    public function edit(Book $book)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Book $book
-     * @return Response
-     */
-    public function update(Request $request, Book $book)
+    public function update(Request $request, Book $book): JsonResponse
     {
         //
     }
