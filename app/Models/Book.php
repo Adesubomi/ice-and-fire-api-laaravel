@@ -24,4 +24,23 @@ class Book extends Model
     protected $dates = [
         "release_date",
     ];
+
+    /**
+     * @return Attribute
+     */
+    protected function author(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => json_decode($value),
+            set: fn (array $value) => json_encode($value),
+        );
+    }
+
+    protected function releaseDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn (Carbon $value) => $value->format('YYYY-MM-DD'),
+            set: fn (string $value) => Carbon::parse($value),
+        );
+    }
 }
