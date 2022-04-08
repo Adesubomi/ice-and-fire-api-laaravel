@@ -33,4 +33,57 @@ class BookFeaturesTest extends TestCase
         $response_data = $response->getData();
         $this->assertCount($books->count(), $response_data->data->books);
     }
+
+    /**
+     * @return void
+     * @test
+     */
+    public function can_create_a_new_book_entry(): void
+    {
+        $endpoint = route('api.v1.books.store');
+
+        $book_sample = Book::factory()
+            ->make();
+
+        $response = $this->postJson(
+            $endpoint,
+            $book_sample->only([
+                'name',
+                'isbn',
+                'author',
+                'country',
+                'number_of_pages',
+                'publisher',
+                'release_date'
+            ])
+        );
+
+        $response->assertSuccessful();
+        $response->assertJsonStructure([
+            'status', 'status_code', 'data' => [
+                'book'
+            ]
+        ]);
+
+        $response->assertJsonFragment(
+            $book_sample->only([
+                'name',
+                'isbn',
+                'country'
+            ])
+        );
+
+        $this->assertDatabaseHas(
+            (new Book)->getTable(),
+            [
+                "name" => $book_sample->name,
+                "isbn" => $book_sample->isbn,
+                "author" => json_encode($book_sample->author),
+                "country" => $book_sample->country,
+                "number_of_pages" => $book_sample->number_of_pages,
+                "publisher" => $book_sample->publisher,
+//                "release_date" => $book_sample->release_date,
+            ]
+        );
+    }
 }

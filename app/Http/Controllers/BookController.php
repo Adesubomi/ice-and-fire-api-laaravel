@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookStoreRequest;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\JsonResponse;
@@ -26,25 +27,16 @@ class BookController extends Controller
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
+    public function store(BookStoreRequest $request)
     {
-        //
-    }
+        $new_book_record = Book::create($request->validated());
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return response()->success(
+            data: [
+                'book' => $new_book_record,
+            ],
+            statusCode: null,
+        );
     }
 
     /**
