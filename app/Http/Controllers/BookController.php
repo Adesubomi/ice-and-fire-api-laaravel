@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\Handler;
 use App\Http\Requests\BookStoreRequest;
 use App\Http\Requests\BookUpdateRequest;
-use App\Http\Resources\BookServiceResource;
 use App\Models\Book;
 use App\Services\IceAndFire\IceAndFireContract;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 
 class BookController extends Controller
@@ -19,6 +16,15 @@ class BookController extends Controller
     {
         try {
             $response_body = $iceAndFire->getBooks();
+
+            if (count($response_body->object()->body) == 0) {
+                return response()->failure(
+                    statusCode: 404,
+                    status: "not found",
+                    data: [],
+                );
+            }
+
             $books_collection = Collection::make($response_body->object()->body);
             $books_response = Book::fromExternalCollection($books_collection);
 

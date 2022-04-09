@@ -3,12 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Book;
-use App\Services\IceAndFire\IceAndFireMockData;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\Client\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class BookFeaturesTest extends TestCase

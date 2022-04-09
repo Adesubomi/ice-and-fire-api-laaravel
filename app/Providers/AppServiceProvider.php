@@ -3,9 +3,7 @@
 namespace App\Providers;
 
 use App\Services\IceAndFire\IceAndFireContract;
-use App\Services\IceAndFire\IceAndFireMockData;
 use App\Services\IceAndFire\IceAndFireService;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

@@ -24,7 +24,7 @@ class ResponseMacroServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Response::macro('success', function (mixed $data, ?int $statusCode = null, string $message="") {
+        Response::macro('success', function (mixed $data, int $statusCode = null, string $message="") {
             $payload = [
                 'status_code' => $statusCode ?? 200,
                 'status' => 'success',
@@ -45,8 +45,22 @@ class ResponseMacroServiceProvider extends ServiceProvider
             return Response::json([], 400,);
         });
 
-        Response::macro('failure', function (mixed $data = [], int $statusCode=500) {
-            return Response::json($data, $statusCode,);
+        Response::macro('failure', function (array $data=null, int $statusCode=500, string $status=null, string $message=null) {
+
+            $response_body = [
+                'status_code' => $statusCode,
+            ];
+
+            if (!is_null($message)) {
+                $payload['message'] = $message;
+            }
+
+            if (!is_null($data)) {
+                $payload['data'] = $data;
+            }
+
+
+            return Response::json($response_body, $statusCode);
         });
     }
 }

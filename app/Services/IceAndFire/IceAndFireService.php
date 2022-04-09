@@ -12,13 +12,17 @@ class IceAndFireService implements IceAndFireContract
     public function __construct()
     {
         Http::macro('iceAndFire', function () {
-            return Http::baseUrl('https://www.anapioficeandfire.com/api');
+            return Http::baseUrl('https://www.anapioficeandfire.com')
+                ->withHeaders([
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                ]);
         });
     }
 
     public function getBooks(?string $bookName = null): Response
     {
-        $uri = '/books';
+        $uri = '/api/books';
 
         if (!empty($bookName)) {
             $uri .= '?name='.$bookName;
