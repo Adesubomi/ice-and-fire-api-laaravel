@@ -34,7 +34,9 @@ class ResponseMacroServiceProvider extends ServiceProvider
                 $payload['message'] = $message;
             }
 
-            $payload['data'] = $data;
+            if (!is_null($data)) {
+                $payload['data'] = $data;
+            }
 
             return Response::json($payload);
         });

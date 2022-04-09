@@ -53,14 +53,15 @@ class BookController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Book $book
-     * @return Response
-     */
-    public function destroy(Book $book)
+    public function destroy(Book $book): JsonResponse
     {
-        //
+        $book_name = $book->name;
+        $book->delete();
+
+        return response()->success(
+            data: null,
+            statusCode: null,
+            message: 'The book "'. $book_name .'" was deleted successfully'
+        );
     }
 }

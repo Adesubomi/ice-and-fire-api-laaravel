@@ -115,6 +115,31 @@ class BookFeaturesTest extends TestCase
                 ]
             ]
         ]);
+    }
 
+    /**
+     * @return void
+     * @test
+     */
+    public function can_delete_a_book()
+    {
+        $book_sample = Book::factory()->create();
+        $endpoint = route('api.v1.books.destroy', [
+            'book' => $book_sample->id,
+        ]);
+
+        $response = $this->deleteJson($endpoint);
+
+        $response->assertSuccessful();
+        $response->assertJsonStructure([
+            'status', 'status_code',
+        ]);
+
+        $this->assertDatabaseMissing(
+            (new Book())->getTable(),
+            [
+                'id' => $book_sample->id
+            ]
+        );
     }
 }
