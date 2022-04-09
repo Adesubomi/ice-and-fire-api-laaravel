@@ -3,15 +3,38 @@
 namespace Tests\Feature;
 
 use App\Models\Book;
+use App\Services\IceAndFire\IceAndFireMockData;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class BookFeaturesTest extends TestCase
 {
-
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->httpMocks();
+    }
+
+    /**
+     * @return void
+     * @test
+     */
+    public function can_retrieve_books_from_external_api_service()
+    {
+        $endpoint = route('api.books.external');
+
+        $response = $this->getJson($endpoint);
+        $response->assertSuccessful();
+        $response->assertJsonStructure([
+            'status', 'status_code', 'data',
+        ]);
+    }
 
     /**
      * @return void
@@ -51,7 +74,7 @@ class BookFeaturesTest extends TestCase
             $book_sample->only([
                 'name',
                 'isbn',
-                'author',
+                'authors',
                 'country',
                 'number_of_pages',
                 'publisher',
@@ -65,7 +88,7 @@ class BookFeaturesTest extends TestCase
                 'book' => [
                     "name",
                     "isbn",
-                    "author",
+                    "authors",
                     "country",
                     "number_of_pages",
                     "publisher",
@@ -87,7 +110,7 @@ class BookFeaturesTest extends TestCase
             [
                 "name" => $book_sample->name,
                 "isbn" => $book_sample->isbn,
-                "author" => json_encode($book_sample->author),
+                "authors" => json_encode($book_sample->authors),
                 "country" => $book_sample->country,
                 "number_of_pages" => $book_sample->number_of_pages,
                 "publisher" => $book_sample->publisher,
@@ -114,7 +137,7 @@ class BookFeaturesTest extends TestCase
             'status', 'status_code', 'data' => [
                 "name",
                 "isbn",
-                "author",
+                "authors",
                 "country",
                 "number_of_pages",
                 "publisher",
@@ -141,7 +164,7 @@ class BookFeaturesTest extends TestCase
             $book_sample_for_update->only([
                 'name',
                 'isbn',
-                'author',
+                'authors',
                 'country',
                 'number_of_pages',
                 'publisher',
@@ -154,7 +177,7 @@ class BookFeaturesTest extends TestCase
             'status', 'status_code', 'message', 'data' => [
                 "name",
                 "isbn",
-                "author",
+                "authors",
                 "country",
                 "number_of_pages",
                 "publisher",
@@ -166,14 +189,14 @@ class BookFeaturesTest extends TestCase
         $data_for_check = $book_sample_for_update->only([
             'name',
             'isbn',
-            'author',
+            'authors',
             'country',
             'number_of_pages',
             'publisher',
             'release_date'
         ]);
         $data_for_check['id'] = $book_sample->id;
-        $data_for_check['author'] = json_encode($book_sample_for_update->author);
+        $data_for_check['authors'] = json_encode($book_sample_for_update->authors);
         $data_for_check['release_date'] = Carbon::parse($book_sample_for_update->release_date);
 
         $this->assertDatabaseHas(

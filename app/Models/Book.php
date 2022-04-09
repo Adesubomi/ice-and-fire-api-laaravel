@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Book extends Model
 {
@@ -14,7 +15,7 @@ class Book extends Model
     protected $fillable = [
         "name",
         "isbn",
-        "author",
+        "authors",
         "country",
         "number_of_pages",
         "publisher",
@@ -28,7 +29,7 @@ class Book extends Model
     /**
      * @return Attribute
      */
-    protected function author(): Attribute
+    protected function authors(): Attribute
     {
         return Attribute::make(
             get: fn (string $value) => json_decode($value),
@@ -42,5 +43,21 @@ class Book extends Model
             get: fn (mixed $value) => Carbon::parse($value)->format('Y-m-d'),
             set: fn (string $value) => Carbon::parse($value),
         );
+    }
+
+    public static function fromExternalCollection(Collection $books): Collection
+    {
+        return $books->map( function ($book) {
+            return [
+                "name" => $book->name,
+                "isbn" => $book->isbn,
+                "authors" => $book->authors,
+                "number_of_pages" => $book->numberOfPages,
+                "publisher" => $book->publisher,
+                "country" => $book->country,
+                "release_date" => Carbon::parse($book->released)
+                    ->format('Y-m-d'),
+            ];
+        });
     }
 }

@@ -19,7 +19,7 @@ class BookFactory extends Factory
         return [
             "name" => $this->faker->company(),
             "isbn" => $this->faker->isbn13(),
-            "author" => [
+            "authors" => [
                 $this->faker->name()
             ],
             "country" => $this->faker->country(),

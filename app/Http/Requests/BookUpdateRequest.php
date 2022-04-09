@@ -21,7 +21,7 @@ class BookUpdateRequest extends FormRequest
         return [
             "name" => 'sometimes',
             "isbn" => 'sometimes|unique:books,isbn',
-            "author" => 'sometimes|array',
+            "authors" => 'sometimes|array',
             "country" => 'sometimes',
             "number_of_pages" => 'sometimes|numeric',
             "publisher" => 'sometimes',

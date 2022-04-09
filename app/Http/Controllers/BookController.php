@@ -2,32 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\Handler;
 use App\Http\Requests\BookStoreRequest;
 use App\Http\Requests\BookUpdateRequest;
+use App\Http\Resources\BookServiceResource;
 use App\Models\Book;
+use App\Services\IceAndFire\IceAndFireContract;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return JsonResponse
-     */
-    public function index(Request $request)
+    public function externalBooks(Request $request, IceAndFireContract $iceAndFire): JsonResponse
+    {
+        try {
+            $response_body = $iceAndFire->getBooks();
+            $books_collection = Collection::make($response_body->object()->body);
+            $books_response = Book::fromExternalCollection($books_collection);
+
+            return response()->success(
+                data: $books_response,
+            );
+        } catch (\Exception $exception) {
+            return response()->failure();
+        }
+    }
+
+    public function index(): JsonResponse
     {
         return response()->success(
             data: [
                 'books' => Book::latest()->get(),
             ],
-            statusCode: null,
             message: "List of books"
         );
     }
 
-    public function store(BookStoreRequest $request)
+    public function store(BookStoreRequest $request): JsonResponse
     {
         $new_book_record = Book::create($request->validated());
 
@@ -35,7 +48,6 @@ class BookController extends Controller
             data: [
                 'book' => $new_book_record,
             ],
-            statusCode: null,
         );
     }
 
@@ -43,7 +55,6 @@ class BookController extends Controller
     {
         return response()->success(
             data: $book,
-            statusCode: null,
         );
     }
 

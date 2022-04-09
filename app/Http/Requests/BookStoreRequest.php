@@ -16,7 +16,7 @@ class BookStoreRequest extends FormRequest
         return [
             "name" => 'required',
             "isbn" => 'required|unique:books,isbn',
-            "author" => 'required|array',
+            "authors" => 'required|array',
             "country" => 'required',
             "number_of_pages" => 'required|numeric',
             "publisher" => 'required',

@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\IceAndFire\IceAndFireContract;
+use App\Services\IceAndFire\IceAndFireMockData;
+use App\Services\IceAndFire\IceAndFireService;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->registerIceAndFireServiceRegister();
     }
 
     /**
@@ -24,5 +28,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+    }
+
+    private function registerIceAndFireServiceRegister()
+    {
+        $this->app->singleton(IceAndFireContract::class, function () {
+            return new IceAndFireService();
+        });
     }
 }

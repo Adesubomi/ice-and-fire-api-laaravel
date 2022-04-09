@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('external-books', [BookController::class, 'externalBooks'])
+    ->name('books.external');
+
 Route::prefix('v1')->name('v1.')->group( function () {
     Route::resource('books', BookController::class)
         ->only(['index', 'show', 'store', 'update', 'destroy']);

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->string("isbn")->unique();
-            $table->string("author");
+            $table->string("authors");
             $table->string("country");
             $table->integer("number_of_pages");
             $table->string("publisher");
