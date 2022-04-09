@@ -62,7 +62,15 @@ class BookFeaturesTest extends TestCase
         $response->assertSuccessful();
         $response->assertJsonStructure([
             'status', 'status_code', 'data' => [
-                'book'
+                'book' => [
+                    "name",
+                    "isbn",
+                    "author",
+                    "country",
+                    "number_of_pages",
+                    "publisher",
+                    "release_date",
+                ]
             ]
         ]);
 
@@ -104,17 +112,74 @@ class BookFeaturesTest extends TestCase
         $response->assertSuccessful();
         $response->assertJsonStructure([
             'status', 'status_code', 'data' => [
-                'book' => [
-                    "name",
-                    "isbn",
-                    "author",
-                    "country",
-                    "number_of_pages",
-                    "publisher",
-                    "release_date",
-                ]
+                "name",
+                "isbn",
+                "author",
+                "country",
+                "number_of_pages",
+                "publisher",
+                "release_date",
             ]
         ]);
+    }
+
+    /**
+     * @return void
+     * @test
+     */
+    public function can_update_the_details_of_a_book(): void
+    {
+        $book_sample = Book::factory()->create();
+        $book_sample_for_update = Book::factory()->make();
+
+        $endpoint = route('api.v1.books.update', [
+            'book' => $book_sample->id,
+        ]);
+
+        $response = $this->patchJson(
+            $endpoint,
+            $book_sample_for_update->only([
+                'name',
+                'isbn',
+                'author',
+                'country',
+                'number_of_pages',
+                'publisher',
+                'release_date'
+            ])
+        );
+
+        $response->assertSuccessful();
+        $response->assertJsonStructure([
+            'status', 'status_code', 'message', 'data' => [
+                "name",
+                "isbn",
+                "author",
+                "country",
+                "number_of_pages",
+                "publisher",
+                "release_date",
+            ]
+        ]);
+
+        // check to see that all info was updated
+        $data_for_check = $book_sample_for_update->only([
+            'name',
+            'isbn',
+            'author',
+            'country',
+            'number_of_pages',
+            'publisher',
+            'release_date'
+        ]);
+        $data_for_check['id'] = $book_sample->id;
+        $data_for_check['author'] = json_encode($book_sample_for_update->author);
+        $data_for_check['release_date'] = Carbon::parse($book_sample_for_update->release_date);
+
+        $this->assertDatabaseHas(
+            (new Book)->getTable(),
+            $data_for_check
+        );
     }
 
     /**

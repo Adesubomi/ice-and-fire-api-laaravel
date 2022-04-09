@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookStoreRequest;
+use App\Http\Requests\BookUpdateRequest;
 use App\Models\Book;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -41,16 +42,24 @@ class BookController extends Controller
     public function show(Book $book): JsonResponse
     {
         return response()->success(
-            data: [
-                'book' => $book,
-            ],
+            data: $book,
             statusCode: null,
         );
     }
 
-    public function update(Request $request, Book $book): JsonResponse
+    public function update(BookUpdateRequest $request, Book $book): JsonResponse
     {
-        //
+        $current_book_name = $book->name;
+        $book_is_updated = $book->update($request->validated());
+
+        if (!$book_is_updated) {
+            return response()->failure();
+        }
+
+        return response()->success(
+            data: $book,
+            message: 'The book "'. $current_book_name .'" was updated successfully'
+        );
     }
 
     public function destroy(Book $book): JsonResponse
@@ -60,7 +69,6 @@ class BookController extends Controller
 
         return response()->success(
             data: null,
-            statusCode: null,
             message: 'The book "'. $book_name .'" was deleted successfully'
         );
     }

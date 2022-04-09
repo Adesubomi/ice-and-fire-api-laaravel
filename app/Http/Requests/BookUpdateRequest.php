@@ -11,20 +11,21 @@ class BookUpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            "name" => 'sometimes',
+            "isbn" => 'sometimes|unique:books,isbn',
+            "author" => 'sometimes|array',
+            "country" => 'sometimes',
+            "number_of_pages" => 'sometimes|numeric',
+            "publisher" => 'sometimes',
+            "release_date" => 'sometimes',
         ];
     }
 }
