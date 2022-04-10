@@ -26,6 +26,11 @@ class Book extends Model
         "release_date",
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     /**
      * @return Attribute
      */

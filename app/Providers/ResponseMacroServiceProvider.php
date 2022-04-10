@@ -46,6 +46,16 @@ class ResponseMacroServiceProvider extends ServiceProvider
             return Response::json([], 400,);
         });
 
+        Response::macro('notFound', function () {
+            return Response::json(
+                data: [
+                    'message' => 'not found',
+                    'status_code' => 404,
+                ],
+                status: 404
+            );
+        });
+
         Response::macro('failure', function (array $data=null, int $statusCode=500, string $status=null, string $message=null) {
 
             $response_body = [

@@ -23,7 +23,7 @@ class BookController extends Controller
                 ->object();
 
             if (count($response_body) == 0) {
-                return response()->failure(
+                return response()->notFound(
                     statusCode: 404,
                     status: "not found",
                     data: [],
@@ -42,13 +42,20 @@ class BookController extends Controller
         }
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $query_search = $request->query('search');
+        $books_query = Book::latest();
+
+        if (!empty($query_search)) {
+            $books_query = $books_query->whereYear('release_date', $query_search)
+                ->orWhere('name', 'like', "%$query_search%")
+                ->orWhere('country', 'like', "%$query_search%")
+                ->orWhere('publisher', 'like', "%$query_search%");
+        }
+
         return response()->success(
-            data: [
-                'books' => Book::latest()->get(),
-            ],
-            message: "List of books"
+            data: $books_query->get(),
         );
     }
 
@@ -57,6 +64,7 @@ class BookController extends Controller
         $new_book_record = Book::create($request->validated());
 
         return response()->success(
+            statusCode: 201,
             data: [
                 'book' => $new_book_record,
             ],

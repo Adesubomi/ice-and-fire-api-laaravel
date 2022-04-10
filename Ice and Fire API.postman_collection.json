@@ -22,7 +22,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{base_url}}/api/external-books?name=",
+					"raw": "{{base_url}}/api/external-books?name=A Game of Thrones",
 					"host": [
 						"{{base_url}}"
 					],
@@ -33,7 +33,7 @@
 					"query": [
 						{
 							"key": "name",
-							"value": ""
+							"value": "A Game of Thrones"
 						}
 					]
 				}
@@ -58,7 +58,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"name of the book\",\n    \"isbn\": \"some isbn\",\n    \"author\": \"Gregory Campbell\",\n    \"country\": \"Nigeria\",\n    \"number_of_pages\": 543,\n    \"publisher\": \"MkKinley publishers\",\n    \"release_date\": \"2021-04-14\"\n}"
+					"raw": "{\n      \"name\":\"My First Updated Book\",\n      \"isbn\":\"123-3213243567\",\n      \"authors\":[\n\"John Doe\" ],\n      \"number_of_pages\":350,\n      \"publisher\":\"Acme Books Publishing\",\n      \"country\":\"United States\",\n      \"release_date\":\"2019-01-01\"\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}/api/v1/books",
@@ -91,7 +91,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{base_url}}/api/v1/books",
+					"raw": "{{base_url}}/api/v1/books?search=",
 					"host": [
 						"{{base_url}}"
 					],
@@ -99,6 +99,12 @@
 						"api",
 						"v1",
 						"books"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": ""
+						}
 					]
 				}
 			},
@@ -121,7 +127,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{base_url}}/api/v1/books/{{book_id}}",
+					"raw": "{{base_url}}/api/v1/books/{{show_book_id}}",
 					"host": [
 						"{{base_url}}"
 					],
@@ -129,7 +135,7 @@
 						"api",
 						"v1",
 						"books",
-						"{{book_id}}"
+						"{{show_book_id}}"
 					]
 				}
 			},
@@ -153,10 +159,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"name of the book\",\n    \"isbn\": \"some isbn\",\n    \"author\": \"Gregory Campbell\",\n    \"country\": \"Nigeria\",\n    \"number_of_pages\": 543,\n    \"publisher\": \"MkKinley publishers\",\n    \"release_date\": \"2021-04-14\"\n}"
+					"raw": "{\n    \"name\": \"name of the book - updated\",\n    \"isbn\": \"isbn-00001-updated\",\n    \"author\": [\n        \"Gregory Campbell\"\n    ],\n    \"country\": \"Nigeria\",\n    \"number_of_pages\": 543,\n    \"publisher\": \"MkKinley publishers\",\n    \"release_date\": \"2021-04-14\"\n}"
 				},
 				"url": {
-					"raw": "{{base_url}}/api/v1/books/{{book_id}}",
+					"raw": "{{base_url}}/api/v1/books/{{update_book_id}}",
 					"host": [
 						"{{base_url}}"
 					],
@@ -164,7 +170,7 @@
 						"api",
 						"v1",
 						"books",
-						"{{book_id}}"
+						"{{update_book_id}}"
 					]
 				}
 			},
@@ -187,7 +193,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{base_url}}/api/v1/books/{{book_id}}",
+					"raw": "{{base_url}}/api/v1/books/{{delete_book_id}}",
 					"host": [
 						"{{base_url}}"
 					],
@@ -195,7 +201,7 @@
 						"api",
 						"v1",
 						"books",
-						"{{book_id}}"
+						"{{delete_book_id}}"
 					]
 				}
 			},
