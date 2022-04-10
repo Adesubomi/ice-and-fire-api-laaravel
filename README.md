@@ -1,92 +1,22 @@
 ## Ice and Fire API - assignment
 
-### Requirements
-1. [GET] /api/external-books?name=<nameOfBook> - Get list of books from external api
-    #### Expected output
-    ```
-    {
-        status_code: 200,
-        status: 'success',
-        data: [ <fetch list of books from external api> ]
-    }
-    ```
+### Requirement
+This project uses Laravel 9.x, php ^8.0 
 
-2. [POST] /api/v1/books - Store a book to the local database
-    #### Request Body
-    ```
-    {
-        name: <string>
-        isbn: <string>
-        author: <string>
-        country: <string>
-        number_of_pages: <string>
-        publisher: <string>
-        release_date: <string>
-    }
-    ```
-   #### Expected output
-    ```
-    {
-        status_code: 200,
-        status: 'success',
-        data: {
-            book: { <book model resource> }
-        }
-    }
-    ```
+### Valet Setup
+1. Install [valet](https://laravel.com/docs/9.x/valet) (if you don't already have valet)
+2. Setup your database, and update db configurations in .env file
+3. To link this project directory with valet, Run `valet link` in your terminal
 
-3. [GET] /api/v1/books - Get list of books from local database
-    #### Expected output
-    ```
-    {
-        status_code: 200,
-        status: 'success',
-        data: {
-            books: [ <list of books from local api> ]
-        }
-    }
-    ```
+### Sail Setup (docker)
+1. You need to have docker installed to use this option. See sail documentation [here](https://laravel.com/docs/9.x/sail)
+2. Make sure to set up docker-compose environment variable required for this setup. These include `FORWARD_APP_PORT`, `FORWARD_DB_PORT`
+3. To start the application in the container, run `sail up` in your terminal.
 
-4. [PATCH] /api/v1/books/{id} - Update a book entry
-    #### Request Body
-    ```
-    {
-        name: <string>
-        isbn: <string>
-        author: <string>
-        country: <string>
-        number_of_pages: <string>
-        publisher: <string>
-        release_date: <string>
-    }
-    ```
-    #### Expected output
-    ```
-    {
-        status_code: 200,
-        status: 'success',
-        message: 'The book "My First Book" was updated successfully',
-        data: { updated book model resource }
-    }
-    ```
+**tldr;**
+If you have mysql running on the same port as configured in your env file, you may have to turn it off to prevent it from interfering with docker's forwarding port for mysql  
 
-5. [DELETE] /api/v1/books/{id} - Delete a book entry
-   #### Expected output
-    ```
-    {
-        status_code: 204,
-        status: 'success',
-        message: 'The book "My First Book" was deleted successfully',
-        data: {}
-    }
-    ```    
-
-5. [GET] /api/v1/books/{id} - Show a book entry
-    #### Expected output
-    ```
-    {
-        status_code: 200,
-        status: 'success',
-        data: { book model resource }
-    }
-    ```
+### Postman Collection
+1. Import postman collection included in the root of this project - "Ice and Fire API.postman_collection.json"
+2. After importing postman collection, create an environment on postman that could be used to test the project
+   Postman Environment variables needed include, `base_url`, `external_search_string`, `delete_book_id`, `update_book_id`, `show_book_id`

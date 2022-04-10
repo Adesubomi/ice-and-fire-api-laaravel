@@ -22,7 +22,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{base_url}}/api/external-books?name=A Game of Thrones",
+					"raw": "{{base_url}}/api/external-books?name={{external_search_string}}",
 					"host": [
 						"{{base_url}}"
 					],
@@ -91,7 +91,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{base_url}}/api/v1/books?search=",
+					"raw": "{{base_url}}/api/v1/books?search={{search_string}}",
 					"host": [
 						"{{base_url}}"
 					],
