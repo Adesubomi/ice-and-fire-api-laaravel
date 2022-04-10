@@ -45,13 +45,11 @@ class BookFeaturesTest extends TestCase
         $response = $this->getJson($endpoint);
         $response->assertSuccessful();
         $response->assertJsonStructure([
-            'status', 'status_code', 'data' => [
-                'books'
-            ]
+            'status', 'status_code', 'data'
         ]);
 
         $response_data = $response->getData();
-        $this->assertCount($books->count(), $response_data->data->books);
+        $this->assertCount($books->count(), $response_data->data);
     }
 
     /**
