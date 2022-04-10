@@ -6,5 +6,5 @@ use Illuminate\Http\Client\Response;
 
 interface IceAndFireContract
 {
-    public function getBooks(?string $bookName=null): Response;
+    public function getBooks(string $bookName=null): Response;
 }

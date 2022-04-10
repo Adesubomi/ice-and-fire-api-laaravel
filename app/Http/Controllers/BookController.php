@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\Handler;
 use App\Http\Requests\BookStoreRequest;
 use App\Http\Requests\BookUpdateRequest;
 use App\Models\Book;
@@ -14,10 +15,14 @@ class BookController extends Controller
 {
     public function externalBooks(Request $request, IceAndFireContract $iceAndFire): JsonResponse
     {
-        try {
-            $response_body = $iceAndFire->getBooks();
+        $query_search = $request->query('name');
 
-            if (count($response_body->object()->body) == 0) {
+        try {
+            /** @var array $response_body */
+            $response_body = $iceAndFire->getBooks($query_search ?? null)
+                ->object();
+
+            if (count($response_body) == 0) {
                 return response()->failure(
                     statusCode: 404,
                     status: "not found",
@@ -25,13 +30,14 @@ class BookController extends Controller
                 );
             }
 
-            $books_collection = Collection::make($response_body->object()->body);
+            $books_collection = Collection::make($response_body);
             $books_response = Book::fromExternalCollection($books_collection);
 
             return response()->success(
                 data: $books_response,
             );
         } catch (\Exception $exception) {
+            Handler::logAnException($exception);
             return response()->failure();
         }
     }
